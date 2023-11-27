@@ -10,12 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.awt.*;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 import static java.time.format.DateTimeFormatter.*;
 
 public class DashboardFormController {
@@ -46,5 +42,16 @@ public class DashboardFormController {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void itemsButtonOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage)pane.getScene().getWindow();
+
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/ItemForm.fxml"))));
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,3 +1,4 @@
+controller\ItemFormController.class
 model\tm\CustomerTm.class
 AppInitializer.class
 controller\DashboardFormController.class

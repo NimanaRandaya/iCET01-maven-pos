@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -29,5 +30,6 @@
         </columns>
       </TableView>
       <Button layoutX="831.0" layoutY="550.0" mnemonicParsing="false" onAction="#reloadButtonOnAction" text="Reload" />
+      <JFXButton alignment="CENTER" buttonType="RAISED" layoutX="33.0" layoutY="121.0" onAction="#backButtonOnAction" prefHeight="31.0" prefWidth="83.0" style="-fx-background-color: #f44336;" text="Back" />
    </children>
 </AnchorPane>
