@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ public class CustomerFormController {
     private TextField txtAddress;
 
     @FXML
-    private TableView tblCustomer;
+    private TableView <CustomerTm> tblCustomer;
 
     @FXML
     private TableColumn colId;
@@ -52,6 +53,21 @@ public class CustomerFormController {
         colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         colOption.setCellValueFactory(new PropertyValueFactory<>("btn"));
         loadCustomerTable();
+
+        tblCustomer.getSelectionModel().selectedItemProperty().addListener((ObservableValue,oldValue,newValue) ->{
+            setData(newValue);
+        });
+
+    }
+
+    private void setData(CustomerTm newValue) {
+        if (newValue!= null){
+            txtId.setEditable(false);
+            txtId.setText(newValue.getId());
+            txtName.setText(newValue.getName());
+            txtAddress.setText(newValue.getAddress());
+            txtSalary.setText(String.valueOf(newValue.getSalary()));
+        }
     }
 
     private void loadCustomerTable() {
@@ -112,6 +128,16 @@ public class CustomerFormController {
     void reloadButtonOnAction(ActionEvent event) {
         loadCustomerTable();
         tblCustomer.refresh();
+        clearFields();
+    }
+
+    private void clearFields() {
+        tblCustomer.refresh();
+        txtId.clear();
+        txtName.clear();
+        txtAddress.clear();
+        txtSalary.clear();
+        txtId.setEditable(true);
     }
 
     @FXML
@@ -125,13 +151,17 @@ public class CustomerFormController {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection =DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","2351");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "2351");
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(sql);
-            if (result>0){
-                new Alert(Alert.AlertType.INFORMATION,"Customer saved!").show();
+            if (result > 0) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer saved!").show();
+                loadCustomerTable();
+                clearFields();
             }
             connection.close();
+        }catch (SQLIntegrityConstraintViolationException ex){
+            new Alert(Alert.AlertType.ERROR, "Duplicate Entry!").show();
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
@@ -139,6 +169,29 @@ public class CustomerFormController {
 
     @FXML
     void updateButtonOnAction(ActionEvent event) {
+        Customer c = new Customer(txtId.getText(),
+                txtName.getText(),
+                txtAddress.getText(),
+                Double.parseDouble(txtSalary.getText())
+        );
+        String sql  = "UPDATE customer SET name = '"+c.getName()+"',address= '"+c.getAddress()+"',salary = "+c.getSalary()+"WHERE id='"+c.getId()+"'";
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "2351");
+            Statement stm = connection.createStatement();
+            int result = stm.executeUpdate(sql);
+            if (result > 0) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer"+c.getId()+" Updated!").show();
+                loadCustomerTable();
+                clearFields();
+            }
+            connection.close();
+        }catch (SQLIntegrityConstraintViolationException ex){
+            new Alert(Alert.AlertType.ERROR, "Duplicate Entry!").show();
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
