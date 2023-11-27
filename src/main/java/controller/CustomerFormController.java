@@ -4,15 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
 import model.tm.CustomerTm;
 
-import java.net.URL;
 import java.sql.*;
-import java.util.ResourceBundle;
 
 import static java.lang.Class.forName;
 
@@ -77,10 +74,35 @@ public class CustomerFormController {
                         result.getDouble(4),
                         btn
                 );
+                btn.setOnAction(actionEvent ->{
+                    deleteCustomer(c.getId());
+                });
                 tmList.add(c);
             }
-            //connection.close();
+            connection.close();
             tblCustomer.setItems(tmList);
+
+
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteCustomer(String id) {
+        String sql  = "DELETE from customer WHERE id='"+id+"'";
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection =DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","2351");
+            Statement stm = connection.createStatement();
+            int result = stm.executeUpdate(sql);
+            if (result>0){
+                new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
+                loadCustomerTable();
+            }else{
+                new Alert(Alert.AlertType.ERROR,"Something Went Wrong!").show();
+            }
+            connection.close();
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
@@ -88,6 +110,8 @@ public class CustomerFormController {
 
     @FXML
     void reloadButtonOnAction(ActionEvent event) {
+        loadCustomerTable();
+        tblCustomer.refresh();
     }
 
     @FXML
