@@ -76,7 +76,7 @@ public class CustomerFormController {
         String sql  = "SELECT * FROM customer";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection =DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","2351");
             Statement stm = connection.createStatement();
             ResultSet result = stm.executeQuery(sql);
@@ -108,7 +108,7 @@ public class CustomerFormController {
         String sql  = "DELETE from customer WHERE id='"+id+"'";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection =DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","2351");
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(sql);
@@ -150,7 +150,7 @@ public class CustomerFormController {
         String sql  = "INSERT INTO customer VALUES('"+c.getId()+"','"+c.getName()+"','"+c.getAddress()+"','"+c.getSalary()+"')";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "2351");
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(sql);
@@ -177,7 +177,7 @@ public class CustomerFormController {
         String sql  = "UPDATE customer SET name = '"+c.getName()+"',address= '"+c.getAddress()+"',salary = "+c.getSalary()+"WHERE id='"+c.getId()+"'";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "2351");
             Statement stm = connection.createStatement();
             int result = stm.executeUpdate(sql);
