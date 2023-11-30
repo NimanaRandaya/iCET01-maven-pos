@@ -9,14 +9,14 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class itemTm extends RecursiveTreeObject<itemTm> {
+public class ItemTm extends RecursiveTreeObject<ItemTm> {
     private String code;
     private String description;
     private double unitPrice;
     private int qty;
     private JFXButton btn;
 
-    public itemTm(String code, String description, double unitPrice, int qty) {
+    public ItemTm(String code, String description, double unitPrice, int qty) {
         this.code = code;
         this.description = description;
         this.unitPrice = unitPrice;

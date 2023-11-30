@@ -37,18 +37,21 @@ public class DashboardFormController {
 
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/CustomerForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Customer Form");
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void itemsButtonOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage)pane.getScene().getWindow();
 
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/ItemForm.fxml"))));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/ItemForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Item Form");
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
