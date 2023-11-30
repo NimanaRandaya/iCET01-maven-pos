@@ -105,11 +105,10 @@ public class CustomerFormController {
     }
 
     private void deleteCustomer(String id) {
-        String sql  = "DELETE from customer WHERE id='"+id+"'";
+
         try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            int result = stm.executeUpdate(sql);
-            if (result>0){
+            boolean isDeleted = customerModel.deleteCustomer(id);
+            if (isDeleted){
                 new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
                 loadCustomerTable();
             }else{
@@ -159,17 +158,15 @@ public class CustomerFormController {
 
     @FXML
     void updateButtonOnAction(ActionEvent event) {
-        CustomerDto c = new CustomerDto(txtId.getText(),
-                txtName.getText(),
-                txtAddress.getText(),
-                Double.parseDouble(txtSalary.getText())
-        );
-        String sql  = "UPDATE customer SET name = '"+c.getName()+"',address= '"+c.getAddress()+"',salary = "+c.getSalary()+"WHERE id='"+c.getId()+"'";
-        try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            int result = stm.executeUpdate(sql);
-            if (result > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Customer"+c.getId()+" Updated!").show();
+
+       try {
+            boolean isUpdated = customerModel.updateCustomer( new CustomerDto(txtId.getText(),
+                    txtName.getText(),
+                    txtAddress.getText(),
+                    Double.parseDouble(txtSalary.getText())
+            ));
+            if (isUpdated) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
                 loadCustomerTable();
                 clearFields();
             }
