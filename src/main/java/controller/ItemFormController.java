@@ -14,8 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -65,7 +65,23 @@ public class ItemFormController {
         colQtyOnHand.setCellValueFactory(new TreeItemPropertyValueFactory<>("qty"));
         colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
         loadItemTable();
+
+        tblItem.getSelectionModel().selectedItemProperty().addListener((ObservableValue,oldValue,newValue) ->{
+            setData(newValue);
+        });
     }
+
+    private void setData(TreeItem<ItemTm> newValue) {
+        if (newValue!= null){
+            txtItemCode.setEditable(false);
+            txtItemCode.setText(newValue.getValue().getCode());
+            txtDescription.setText(newValue.getValue().getDescription());
+            txtUnitPrice.setText(String.valueOf(newValue.getValue().getUnitPrice()));
+            txtQty.setText(String.valueOf(newValue.getValue().getQty()));
+        }
+    }
+
+
 
     private void loadItemTable() {
         ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
@@ -165,7 +181,31 @@ public class ItemFormController {
 
     @FXML
     void updateButtonOnAction(ActionEvent event) {
+       /* ItemDto item = new ItemDto(txtItemCode.getText(),
+                txtDescription.getText(),
+                Double.parseDouble(txtUnitPrice.getText()),
+                Integer.parseInt(txtQty.getText())
+        );
+        String sql  = "UPDATE item SET description  = ?,unitPrice= ?,qtyOnHand =? WHERE code=?";
+        try {
+            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
+            pstm.setString(1, item.getCode());
+            pstm.setString(2, item.getDescription());
+            pstm.setDouble(3, item.getUnitPrice());
+            pstm.setInt(4, item.getQty());
+            int result = pstm.executeUpdate();
+            if (result > 0) {
+                new Alert(Alert.AlertType.INFORMATION, "Item"+item.getCode()+" Updated!").show();
+                loadItemTable();
+                clearFields();
+            }
+        } catch (NumberFormatException ex) {
+            new Alert(Alert.AlertType.ERROR, "Invalid numeric input!").show();
 
+        }catch (SQLIntegrityConstraintViolationException ex){
+            new Alert(Alert.AlertType.ERROR, "Duplicate Entry!").show();
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }*/
     }
-
 }

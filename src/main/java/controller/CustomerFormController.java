@@ -13,6 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import dto.CustomerDto;
 import dto.tm.CustomerTm;
+import model.CustomerModel;
+import model.impl.CustomerModelImpl;
+
 import java.io.IOException;
 import java.sql.*;
 
@@ -47,6 +50,8 @@ public class CustomerFormController {
 
     @FXML
     private TableColumn colOption;
+
+    private CustomerModel customerModel = new CustomerModelImpl();
 
     public void initialize(){
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
