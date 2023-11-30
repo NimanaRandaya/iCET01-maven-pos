@@ -1,8 +1,11 @@
 dto\tm\CustomerTm.class
+controller\PlaceOrderFormController.class
 dto\CustomerDto.class
 dto\ItemDto.class
 controller\CustomerFormController.class
+model\CustomerModel.class
 controller\ItemFormController.class
+model\impl\CustomerModelImpl.class
 AppInitializer.class
 controller\DashboardFormController.class
 db\DBConnection.class
