@@ -36,7 +36,7 @@ public class DashboardFormController {
         Stage stage = (Stage)pane.getScene().getWindow();
 
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/CustomerForm.fxml"))));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/CustomerForm.fxml"))));
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);

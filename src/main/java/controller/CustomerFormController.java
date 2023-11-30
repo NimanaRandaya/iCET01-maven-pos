@@ -22,6 +22,7 @@ import static java.lang.Class.forName;
 public class CustomerFormController {
 
 
+    public AnchorPane customerPane;
     @FXML
     private TextField txtId;
 
@@ -202,13 +203,15 @@ public class CustomerFormController {
     }
 
     public void backButtonOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage)tblCustomer.getScene().getWindow();
+        Stage stage = (Stage)customerPane.getScene().getWindow();
 
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/DashboardForm.fxml"))));
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 }
+
+
