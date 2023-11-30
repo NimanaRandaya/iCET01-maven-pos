@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,8 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.Customer;
-import model.tm.CustomerTm;
+import dto.Customer;
+import dto.tm.CustomerTm;
 
 import java.io.IOException;
 import java.sql.*;

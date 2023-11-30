@@ -1,17 +1,23 @@
-package model;
+package dto.tm;
 
-public class Customer {
+import javafx.scene.control.Button;
+
+public class CustomerTm {
     private String id;
     private String name;
     private String address;
     private double salary;
-    public Customer() {
+    private Button btn;
+
+    public CustomerTm() {
     }
-    public Customer(String id, String name, String address, double salary) {
+
+    public CustomerTm(String id, String name, String address, double salary, Button btn) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.salary = salary;
+        this.btn = btn;
     }
 
     public String getId() {
@@ -46,13 +52,22 @@ public class Customer {
         this.salary = salary;
     }
 
+    public Button getBtn() {
+        return btn;
+    }
+
+    public void setBtn(Button btn) {
+        this.btn = btn;
+    }
+
     @Override
     public String toString() {
-        return "Customer{" +
+        return "CustomerTm{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", salary='" + salary + '\'' +
+                ", salary=" + salary +
+                ", btn=" + btn +
                 '}';
     }
 }
