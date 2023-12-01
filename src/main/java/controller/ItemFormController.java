@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import db.DBConnection;
 import dto.ItemDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,8 +19,11 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import dto.tm.ItemTm;
+import model.ItemModel;
+import model.impl.ItemModelImpl;
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 public class ItemFormController {
 
@@ -58,6 +60,8 @@ public class ItemFormController {
     @FXML
     private TreeTableColumn colOption;
 
+    private ItemModel itemModel  = new ItemModelImpl();
+
     public void initialize(){
         colItemCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
         colDescription.setCellValueFactory(new TreeItemPropertyValueFactory<>("description"));
@@ -81,22 +85,17 @@ public class ItemFormController {
         }
     }
 
-
-
     private void loadItemTable() {
         ObservableList<ItemTm> tmList = FXCollections.observableArrayList();
-        String sql  = "SELECT * FROM item";
         try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet result = stm.executeQuery(sql);
-
-            while (result.next()){
+            List<ItemDto> dtoList = itemModel.allItems();
+            for (ItemDto dto:dtoList){
                 JFXButton btn = new JFXButton("Delete");
                 ItemTm tm = new ItemTm(
-                        result.getString(1),
-                        result.getString(2),
-                        result.getDouble(3),
-                        result.getInt(4),
+                        dto.getCode(),
+                        dto.getDescription(),
+                        dto.getUnitPrice(),
+                        dto.getQty(),
                         btn
                 );
                 btn.setOnAction(actionEvent ->{
@@ -114,15 +113,11 @@ public class ItemFormController {
     }
 
     private void deleteItem(String code) {
-        String sql  = "DELETE from item WHERE code=?";
         try {
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1,code);
-            int result = pstm.executeUpdate();
-            if (result>0){
+            boolean isDeleted = itemModel.deleteItem(code);
+            if (isDeleted){
                 new Alert(Alert.AlertType.INFORMATION,"Item Deleted!").show();
                 loadItemTable();
-                clearFields();
             }else{
                 new Alert(Alert.AlertType.ERROR,"Something Went Wrong!").show();
             }
@@ -143,7 +138,6 @@ public class ItemFormController {
     @FXML
     void backButtonOnAction(ActionEvent event) {
         Stage stage = (Stage)itemPane.getScene().getWindow();
-
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/DashboardForm.fxml"))));
             stage.show();
@@ -154,20 +148,13 @@ public class ItemFormController {
 
     @FXML
     void saveButtonOnAction(ActionEvent event) {
-        ItemDto item = new ItemDto(txtItemCode.getText(),
-                txtDescription.getText(),
-                Double.parseDouble(txtUnitPrice.getText()),
-                Integer.parseInt(txtQty.getText())
-        );
-        String sql  = "INSERT INTO item VALUES(?,?,?,?)";
         try {
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1, item.getCode());
-            pstm.setString(2, item.getDescription());
-            pstm.setDouble(3, item.getUnitPrice());
-            pstm.setInt(4, item.getQty());
-            int result = pstm.executeUpdate();
-            if (result > 0) {
+            boolean isSaved = itemModel.saveItem(new ItemDto(txtItemCode.getText(),
+                    txtDescription.getText(),
+                    Double.parseDouble(txtUnitPrice.getText()),
+                    Integer.parseInt(txtQty.getText()))
+            );
+            if (isSaved) {
                 new Alert(Alert.AlertType.INFORMATION, "Item saved!").show();
                 loadItemTable();
                 clearFields();
@@ -181,31 +168,21 @@ public class ItemFormController {
 
     @FXML
     void updateButtonOnAction(ActionEvent event) {
-       /* ItemDto item = new ItemDto(txtItemCode.getText(),
-                txtDescription.getText(),
-                Double.parseDouble(txtUnitPrice.getText()),
-                Integer.parseInt(txtQty.getText())
-        );
-        String sql  = "UPDATE item SET description  = ?,unitPrice= ?,qtyOnHand =? WHERE code=?";
         try {
-            PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-            pstm.setString(1, item.getCode());
-            pstm.setString(2, item.getDescription());
-            pstm.setDouble(3, item.getUnitPrice());
-            pstm.setInt(4, item.getQty());
-            int result = pstm.executeUpdate();
-            if (result > 0) {
-                new Alert(Alert.AlertType.INFORMATION, "Item"+item.getCode()+" Updated!").show();
+            boolean isUpdated = itemModel.updateItem( new ItemDto(txtItemCode.getText(),
+                    txtDescription.getText(),
+                    Double.parseDouble(txtUnitPrice.getText()),
+                    Integer.parseInt(txtQty.getText())
+            ));
+            if (isUpdated) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer Updated!").show();
                 loadItemTable();
                 clearFields();
             }
-        } catch (NumberFormatException ex) {
-            new Alert(Alert.AlertType.ERROR, "Invalid numeric input!").show();
-
         }catch (SQLIntegrityConstraintViolationException ex){
             new Alert(Alert.AlertType.ERROR, "Duplicate Entry!").show();
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 }

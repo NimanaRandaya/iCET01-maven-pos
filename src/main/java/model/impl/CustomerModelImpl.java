@@ -2,14 +2,10 @@ package model.impl;
 
 import db.DBConnection;
 import dto.CustomerDto;
-import dto.tm.CustomerTm;
-import javafx.scene.control.Button;
 import model.CustomerModel;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +14,10 @@ public class CustomerModelImpl implements CustomerModel {
     public boolean saveCustomer(CustomerDto dto) throws SQLException, ClassNotFoundException {
         String sql  = "INSERT INTO customer VALUES(?,?,?,?)";
         PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
-
+        pstm.setString(1,dto.getId());
+        pstm.setString(2, dto.getName());
+        pstm.setString(3, dto.getAddress());
+        pstm.setDouble(4,dto.getSalary());
         return pstm.executeUpdate()>0;
     }
 

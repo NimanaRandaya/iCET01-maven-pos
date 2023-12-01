@@ -137,7 +137,6 @@ public class CustomerFormController {
 
     @FXML
     void saveButtonOnAction(ActionEvent event) {
-
         try {
             boolean isSaved = customerModel.saveCustomer(new CustomerDto(txtId.getText(),
                     txtName.getText(),
