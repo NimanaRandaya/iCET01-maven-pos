@@ -60,8 +60,7 @@
             <TreeTableColumn prefWidth="191.0" text="Option" />
          </columns>
       </JFXTreeTableView>
-      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="20.0" onAction="#backButtonOnAction" prefHeight="28.0" prefWidth="44.0"
-      >
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="20.0" onAction="#backButtonOnAction" prefHeight="28.0" prefWidth="44.0">
          <graphic>
             <ImageView fitHeight="55.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                <image>
