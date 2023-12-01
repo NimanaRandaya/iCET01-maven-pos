@@ -47,10 +47,10 @@
       <JFXDrawer />
       <JFXComboBox fx:id="cmbCustId" layoutX="72.0" layoutY="85.0" prefHeight="31.0" prefWidth="228.0" />
       <JFXComboBox fx:id="cmbItemCode" layoutX="68.0" layoutY="176.0" prefHeight="31.0" prefWidth="228.0" />
-      <JFXTextField layoutX="347.0" layoutY="85.0" prefHeight="31.0" prefWidth="272.0" />
-      <JFXTextField layoutX="347.0" layoutY="176.0" prefHeight="31.0" prefWidth="272.0" />
-      <JFXTextField layoutX="691.0" layoutY="176.0" prefHeight="31.0" prefWidth="228.0" />
-      <JFXTextField layoutX="964.0" layoutY="176.0" prefHeight="31.0" prefWidth="172.0" />
+      <JFXTextField fx:id="txtCustName" layoutX="347.0" layoutY="85.0" prefHeight="31.0" prefWidth="272.0" />
+      <JFXTextField fx:id="txtDescription" layoutX="347.0" layoutY="176.0" prefHeight="31.0" prefWidth="272.0" />
+      <JFXTextField fx:id="txtUnitPrice" layoutX="691.0" layoutY="176.0" prefHeight="31.0" prefWidth="228.0" />
+      <JFXTextField fx:id="txtBuyingQty" layoutX="964.0" layoutY="176.0" prefHeight="31.0" prefWidth="172.0" />
       <JFXTreeTableView layoutX="62.0" layoutY="275.0" prefHeight="400.0" prefWidth="1073.0">
          <columns>
             <TreeTableColumn prefWidth="122.00003051757812" text="Code" />
