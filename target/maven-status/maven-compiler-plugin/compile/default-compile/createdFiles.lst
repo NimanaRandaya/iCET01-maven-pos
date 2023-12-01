@@ -15,3 +15,4 @@ controller\DashboardFormController.class
 db\DBConnection.class
 model\impl\OrderModelImpl.class
 dto\tm\ItemTm.class
+dto\tm\OrderTm.class

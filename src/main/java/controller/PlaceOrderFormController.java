@@ -1,13 +1,17 @@
 package controller;
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dto.tm.OrderTm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.CustomerModel;
@@ -18,7 +22,6 @@ import dto.CustomerDto;
 import dto.ItemDto;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceOrderFormController {
@@ -29,13 +32,25 @@ public class PlaceOrderFormController {
     public JFXTextField txtDescription;
     public JFXTextField txtUnitPrice;
     public JFXTextField txtBuyingQty;
-
+    public TreeTableColumn colCode;
+    public TreeTableColumn colDescription;
+    public TreeTableColumn colQty;
+    public TreeTableColumn colOption;
+    public TreeTableColumn colAmount;
+    public Label lblTotal;
+    public JFXTreeTableView <OrderTm> tblOrder;
     private List<CustomerDto> customers;
     private List<ItemDto> items;
-
     private CustomerModel customerModel = new CustomerModelImpl();
     private ItemModel itemModel=new ItemModelImpl();
+    private ObservableList<OrderTm> orderTms =FXCollections.observableArrayList();
     public void initialize(){
+        colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
+        colDescription.setCellValueFactory(new TreeItemPropertyValueFactory<>("description"));
+        colQty.setCellValueFactory(new TreeItemPropertyValueFactory<>("qty"));
+        colAmount.setCellValueFactory(new TreeItemPropertyValueFactory<>("amount"));
+        colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
+
         loadCustomerIds();
         loadItemCodes();
 
@@ -88,10 +103,40 @@ public class PlaceOrderFormController {
         }
     }
 
-    public void addToCartButtonOnAction(MouseEvent mouseEvent) {
-    }
+    public void addToCartButtonOnAction(ActionEvent actionEvent) {
+        try {
+            double amount = itemModel.getItem(cmbItemCode.getValue().toString()).getUnitPrice()* Integer.parseInt(txtBuyingQty.getText());
+            JFXButton btn = new JFXButton("Delete");
+            OrderTm orderTm =new OrderTm(
+                    cmbItemCode.getValue().toString(),
+                    txtDescription.getText(),
+                    Integer.parseInt(txtBuyingQty.getText()),
+                    amount,
+                    btn
+                    );
+            boolean isExist = false;
+            for (OrderTm order:orderTms){
+                if (order.getCode().equals(orderTm.getCode())){
+                    order.setQty(order.getQty()+orderTm.getQty());
+                    order.setAmount(order.getAmount()+orderTm.getAmount());
+                    isExist =true;
+                }
+            }
 
-    public void placeOrderButtonOnAction(MouseEvent mouseEvent) {
+            if (!isExist) {
+                orderTms.add(orderTm);
+            }
+
+            RecursiveTreeItem<OrderTm> treeItem = new RecursiveTreeItem<>(orderTms, RecursiveTreeObject::getChildren);
+            tblOrder.setRoot(treeItem);
+            tblOrder.setShowRoot(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void placeOrderButtonOnAction(ActionEvent actionEvent) {
     }
 
     public void backButtonOnAction(ActionEvent actionEvent) {

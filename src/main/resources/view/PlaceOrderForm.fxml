@@ -51,13 +51,13 @@
       <JFXTextField fx:id="txtDescription" layoutX="347.0" layoutY="176.0" prefHeight="31.0" prefWidth="272.0" />
       <JFXTextField fx:id="txtUnitPrice" layoutX="691.0" layoutY="176.0" prefHeight="31.0" prefWidth="228.0" />
       <JFXTextField fx:id="txtBuyingQty" layoutX="964.0" layoutY="176.0" prefHeight="31.0" prefWidth="172.0" />
-      <JFXTreeTableView layoutX="62.0" layoutY="275.0" prefHeight="400.0" prefWidth="1073.0">
+      <JFXTreeTableView fx:id="tblOrder" layoutX="62.0" layoutY="275.0" prefHeight="400.0" prefWidth="1073.0">
          <columns>
-            <TreeTableColumn prefWidth="122.00003051757812" text="Code" />
-            <TreeTableColumn prefWidth="402.0" text="Description" />
-            <TreeTableColumn prefWidth="150.0" text="Qty" />
-            <TreeTableColumn prefWidth="206.0" text="Amount" />
-            <TreeTableColumn prefWidth="191.0" text="Option" />
+            <TreeTableColumn fx:id="colCode" prefWidth="122.00003051757812" text="Code" />
+            <TreeTableColumn fx:id="colDescription" prefWidth="402.0" text="Description" />
+            <TreeTableColumn fx:id="colQty" prefWidth="150.0" text="Qty" />
+            <TreeTableColumn fx:id="colAmount" prefWidth="206.0" text="Amount" />
+            <TreeTableColumn fx:id="colOption" prefWidth="191.0" text="Option" />
          </columns>
       </JFXTreeTableView>
       <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="28.0" layoutY="20.0" onAction="#backButtonOnAction" prefHeight="28.0" prefWidth="44.0">
@@ -68,12 +68,12 @@
                </image>
             </ImageView>
          </graphic></JFXButton>
-      <JFXButton layoutX="983.0" layoutY="222.0" onDragDetected="#addToCartButtonOnAction" prefHeight="42.0" prefWidth="152.0" style="-fx-background-color: #ff6900;" text="Add to Cart" textFill="WHITE">
+      <JFXButton layoutX="983.0" layoutY="222.0" onAction="#addToCartButtonOnAction" prefHeight="42.0" prefWidth="152.0" style="-fx-background-color: #ff6900;" text="Add to Cart" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton layoutX="983.0" layoutY="697.0" onDragDetected="#placeOrderButtonOnAction" prefHeight="42.0" prefWidth="152.0" style="-fx-background-color: #f44336;" text="Place Order" textFill="WHITE">
+      <JFXButton layoutX="983.0" layoutY="697.0" onAction="#placeOrderButtonOnAction" prefHeight="42.0" prefWidth="152.0" style="-fx-background-color: #f44336;" text="Place Order" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="18.0" />
          </font>
