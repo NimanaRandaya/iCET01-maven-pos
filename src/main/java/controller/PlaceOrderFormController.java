@@ -43,6 +43,7 @@ public class PlaceOrderFormController {
     private List<ItemDto> items;
     private CustomerModel customerModel = new CustomerModelImpl();
     private ItemModel itemModel=new ItemModelImpl();
+    private double tot = 0;
     private ObservableList<OrderTm> orderTms =FXCollections.observableArrayList();
     public void initialize(){
         colCode.setCellValueFactory(new TreeItemPropertyValueFactory<>("code"));
@@ -50,6 +51,7 @@ public class PlaceOrderFormController {
         colQty.setCellValueFactory(new TreeItemPropertyValueFactory<>("qty"));
         colAmount.setCellValueFactory(new TreeItemPropertyValueFactory<>("amount"));
         colOption.setCellValueFactory(new TreeItemPropertyValueFactory<>("btn"));
+
 
         loadCustomerIds();
         loadItemCodes();
@@ -107,6 +109,7 @@ public class PlaceOrderFormController {
         try {
             double amount = itemModel.getItem(cmbItemCode.getValue().toString()).getUnitPrice()* Integer.parseInt(txtBuyingQty.getText());
             JFXButton btn = new JFXButton("Delete");
+
             OrderTm orderTm =new OrderTm(
                     cmbItemCode.getValue().toString(),
                     txtDescription.getText(),
@@ -114,22 +117,40 @@ public class PlaceOrderFormController {
                     amount,
                     btn
                     );
+
+            btn.setOnAction(actionEvent1 ->{
+                orderTms.remove(orderTm);
+                tot-=orderTm.getAmount();
+                tblOrder.refresh();
+                lblTotal.setText(String.format("%.2f",tot));
+
+            });
+
             boolean isExist = false;
+
+
             for (OrderTm order:orderTms){
                 if (order.getCode().equals(orderTm.getCode())){
                     order.setQty(order.getQty()+orderTm.getQty());
                     order.setAmount(order.getAmount()+orderTm.getAmount());
                     isExist =true;
+                    tot+=orderTm.getAmount();
                 }
             }
 
             if (!isExist) {
                 orderTms.add(orderTm);
+                tot+=orderTm.getAmount();
             }
 
             RecursiveTreeItem<OrderTm> treeItem = new RecursiveTreeItem<>(orderTms, RecursiveTreeObject::getChildren);
             tblOrder.setRoot(treeItem);
             tblOrder.setShowRoot(false);
+
+            lblTotal.setText(String.format("%.2f",tot));
+
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

@@ -6,6 +6,7 @@ D:\iCET\Java\Day 19\maven-pos\src\main\java\model\impl\OrderModelImpl.java
 D:\iCET\Java\Day 19\maven-pos\src\main\java\dto\CustomerDto.java
 D:\iCET\Java\Day 19\maven-pos\src\main\java\dto\OrderDto.java
 D:\iCET\Java\Day 19\maven-pos\src\main\java\db\DBConnection.java
+D:\iCET\Java\Day 19\maven-pos\src\main\java\dto\tm\OrderTm.java
 D:\iCET\Java\Day 19\maven-pos\src\main\java\model\OrderModel.java
 D:\iCET\Java\Day 19\maven-pos\src\main\java\controller\ItemFormController.java
 D:\iCET\Java\Day 19\maven-pos\src\main\java\dto\tm\CustomerTm.java
