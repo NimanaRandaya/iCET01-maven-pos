@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.ItemDto;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,9 +26,11 @@ import model.impl.ItemModelImpl;
 import java.io.IOException;
 import java.sql.*;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ItemFormController {
 
+    public JFXTextField txtSearch;
     @FXML
     private BorderPane itemPane;
 
@@ -72,6 +76,19 @@ public class ItemFormController {
 
         tblItem.getSelectionModel().selectedItemProperty().addListener((ObservableValue,oldValue,newValue) ->{
             setData(newValue);
+        });
+
+        txtSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                tblItem.setPredicate(new Predicate<TreeItem<ItemTm>>() {
+                    @Override
+                    public boolean test(TreeItem<ItemTm> treeItem) {
+                        return treeItem.getValue().getCode().contains(newValue) ||
+                                treeItem.getValue().getDescription().contains(newValue);
+                    }
+                });
+            }
         });
     }
 
